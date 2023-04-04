@@ -11,8 +11,7 @@ replicaCount: 3
 maxUnavailable: 0
 
 image:
-#  repository: public.ecr.aws/y9s1f3r5/drdroid/agent
-  repository: docker.io/library/agent
+  repository: public.ecr.aws/y9s1f3r5/drdroid/agent
   pullPolicy: IfNotPresent
 
 authSecretKeyRef:

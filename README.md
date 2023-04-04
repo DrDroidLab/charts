@@ -3,7 +3,11 @@
 ```shell
 kubectl create namespace drdroid
 kubectl create -n drdroid secret generic drdroid-agent-auth-token --from-literal=drdroid-auth-token=<>
-kubectl apply -f manifest.yaml -n drdroid
+```
+
+```shell
+helm repo add drdroid https://drdroidlab.github.io/charts
+helm install drdroid-agent --namespace drdroid drdroid/drdroid-agent
 ```
 
 
@@ -16,3 +20,4 @@ kubectl apply -f manifest.yaml -n drdroid
 2. Create PR in the repo with the new package.
 3. Merge the PR
 4. Updated github pages will be deployed
+
