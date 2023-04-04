@@ -1,3 +1,13 @@
 apiVersion: v1
-entries: {}
-generated: "2023-04-04T16:08:49.518834+05:30"
+entries:
+  drdroid-agent:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-04-04T16:17:58.857343+05:30"
+    description: A Helm chart for DrDroid agent
+    digest: c5f8c448963856bae88045f2b8e42cd2ffc91185b2e8ee6d6475e78db69a605a
+    name: drdroid-agent
+    urls:
+    - https://drdroidlab.github.io/charts/drdroid-agent-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-04-04T16:17:58.856706+05:30"

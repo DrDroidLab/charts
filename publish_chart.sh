@@ -1,19 +1,22 @@
 #!/bin/bash
-# This has been picked from https://github.com/open-telemetry/opentelemetry-python/blob/e4a4410dc046f011194eff78e801fb230961eec8/scripts/proto_codegen.sh
-# This doesn't generate the grpc stubs
 set -ex
 
-repo_root="$(git rev-parse --show-toplevel)"
+if [ -z "$1" ]
+then
+      echo "no version defined. please define a version"
+      exit 1
+else
+      echo "Version defined as $1"
+fi
 
+repo_root="$(git rev-parse --show-toplevel)"
+ver=$1
 cd "$repo_root"/
 
 echo "Package agent charts for version $1"
-helm package agent --app-version $1 --version $1
+helm package agent --app-version $ver --version $ver
 
-mv "drdroid-agent-$1.tgz" docs
+mv "drdroid-agent-$ver.tgz" docs
 
-helm repo index docs --url https://drdroidlab.github.io/
-
-
-
-
+echo "Reindexing charts repo"
+helm repo index docs --url https://drdroidlab.github.io/charts
