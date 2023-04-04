@@ -1,0 +1,5 @@
+apiVersion: v2
+name: drdroid-agent
+description: A Helm chart for DrDroid agent
+version: 0.0.1
+appVersion: "0.0.1"

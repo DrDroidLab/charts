@@ -1,0 +1,117 @@
+# Default values for the helm chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+###########
+# Deployment and Service
+###########
+minReadySeconds: 5
+progressDeadlineSeconds: 120
+replicaCount: 3
+maxUnavailable: 0
+
+image:
+#  repository: public.ecr.aws/y9s1f3r5/drdroid/agent
+  repository: docker.io/library/agent
+  pullPolicy: IfNotPresent
+
+authSecretKeyRef:
+  key: "drdroid-auth-token"
+  name: "drdroid-agent-auth-token"
+
+containerPorts:
+  - name: http
+    containerPort: 5121
+
+service:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 5121
+      targetPort: 5121
+      protocol: TCP
+
+livenessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 200m
+    memory: 400Mi
+
+deploymentLabels:
+  app: drdroid-agent
+
+podLabels:
+  app: drdroid-agent
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsUser: 65532
+  fsGroup: 65532
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+    add:
+      - NET_BIND_SERVICE
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+affinity: {}
+
+hostNetwork: false
+
+deploymentSelectorMatchLabels:
+  app: drdroid-agent
+
+serviceSelectorLabels:
+  app: drdroid-agent
+
+# Volumes and Volume mounts
+volumeMounts:
+  - name: drdroid-collector-config-vol
+    mountPath: /conf
+
+volumes:
+  - configMap:
+      name: drdroid-collector-config
+      items:
+        - key: drdroid-collector-config
+          path: drdroid-collector-config.yaml
+    name: drdroid-collector-config-vol
+
+nodeSelector: {}
+
+###########
+# Config Maps
+###########
+configMap:
+  name: drdroid-collector-config
+  data:
+    batcher:
+      batchSize: 100
+    exporter:
+      wrappers:
+        console:
+          console_exporter:
+            enabled: false
+        http:
+          http_exporter:
+            chanSize: 10
+    httpServer:
+      netAddr:
+        endpoint: :5121
+        transport: tcp

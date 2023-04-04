@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    release: {{ .Release.Name }}
+  {{- with .Values.deploymentLabels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  minReadySeconds: {{ .Values.minReadySeconds }}
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.maxUnavailable }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.deploymentSelectorMatchLabels | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        release: {{ .Release.Name }}
+      {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "./agent"
+            - "collector"
+            - "--configScheme=file"
+            - "--configFile=/conf/collector.yaml"
+            - "--config=/conf/drdroid-collector-config.yaml"
+          ports:
+          {{ range $port := .Values.containerPorts }}
+            - name: {{ $port.name }}
+              containerPort: {{ $port.containerPort }}
+          {{ end }}
+          env:
+            - name: DRDROID_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                    {{- toYaml .Values.authSecretKeyRef | nindent 18 }}
+        {{- with .Values.volumeMounts }}
+          volumeMounts:
+          {{- toYaml . | nindent 12}}
+        {{- end }}
+          livenessProbe:
+            initialDelaySeconds: {{ int .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ int .Values.livenessProbe.periodSeconds }}
+            httpGet:
+              path: /
+              port: 5121
+          readinessProbe:
+            initialDelaySeconds: {{ int .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ int .Values.readinessProbe.periodSeconds }}
+            httpGet:
+              path: /
+              port: 5121
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
