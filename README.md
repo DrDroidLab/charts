@@ -5,11 +5,23 @@ kubectl create namespace drdroid
 kubectl create -n drdroid secret generic drdroid-agent-auth-token --from-literal=drdroid-auth-token=<>
 ```
 
+### Add drdroid agent helm release
 ```shell
 helm repo add drdroid https://drdroidlab.github.io/charts
+helm repo update
 helm install drdroid-agent --namespace drdroid drdroid/drdroid-agent
 ```
 
+### Remove drdroid agent helm release
+```shell
+helm uninstall drdroid-agent --namespace drdroid
+```
+
+## Run docker container directly:
+
+```shell
+ docker run -p 5121:5121 -e DRDROID_AUTH_TOKEN=<> -e DRDROID_HOSTNAME=<> public.ecr.aws/y9s1f3r5/drdroid/agent  collector --configScheme=default
+```
 
 # How to release new charts
 
