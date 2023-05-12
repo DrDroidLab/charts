@@ -3,6 +3,7 @@
 ```shell
 kubectl create namespace drdroid
 kubectl create -n drdroid secret generic drdroid-agent-auth-token --from-literal=drdroid-auth-token=<>
+kubectl create -n drdroid secret generic drdroid-aws-secrets --from-literal=access-key-id=<> --from-literal=secret-access-key=<>
 ```
 
 ### Add drdroid agent helm release
