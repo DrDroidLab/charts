@@ -73,6 +73,18 @@ spec:
               valueFrom:
                 secretKeyRef:
                     {{- toYaml .Values.authSecretKeyRef | nindent 18 }}
+            {{- if .Values.aws.enabled }}
+            - name: AWS_REGION
+              value: {{ .Values.aws.region }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.aws.accessKeyIdSecretKeyRef | nindent 18 }}
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.aws.secretAccessKeySecretKeyRef | nindent 18 }}
+            {{- end }}
         {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12}}

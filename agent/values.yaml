@@ -94,6 +94,17 @@ volumes:
 
 nodeSelector: {}
 
+aws:
+  enabled: false
+  region: us-west-2
+  accessKeyIdSecretKeyRef:
+    key: "access-key-id"
+    name: "drdroid-aws-secrets"
+  secretAccessKeySecretKeyRef:
+    key: "secret-access-key"
+    name: "drdroid-aws-secrets"
+
+
 ###########
 # Config Maps
 ###########
