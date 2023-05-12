@@ -2,8 +2,17 @@ apiVersion: v1
 entries:
   drdroid-agent:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2023-05-12T13:11:02.808767+05:30"
+    description: A Helm chart for DrDroid agent
+    digest: bd8d937de7d51d7ebb467dcc44396da17b97ba3a14e8e56438f425a864b7dd57
+    name: drdroid-agent
+    urls:
+    - https://drdroidlab.github.io/charts/drdroid-agent-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     appVersion: 0.3.0
-    created: "2023-05-04T15:23:53.305232+05:30"
+    created: "2023-05-12T13:11:02.80852+05:30"
     description: A Helm chart for DrDroid agent
     digest: 65176af715c059d228f835665ba5a1bebfe3591b181bdffb13cc3e03232bfa65
     name: drdroid-agent
@@ -12,11 +21,11 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-05-04T15:23:53.304932+05:30"
+    created: "2023-05-12T13:11:02.808227+05:30"
     description: A Helm chart for DrDroid agent
     digest: b9d6e11c870e63dee104bdd29613079ac99fba675c53564e02d97ffaf0985864
     name: drdroid-agent
     urls:
     - https://drdroidlab.github.io/charts/drdroid-agent-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-04T15:23:53.304005+05:30"
+generated: "2023-05-12T13:11:02.807549+05:30"
