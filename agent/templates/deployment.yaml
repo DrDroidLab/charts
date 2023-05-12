@@ -62,8 +62,7 @@ spec:
             - "./agent"
             - "collector"
             - "--configScheme=file"
-            - "--configFile=/conf/collector.yaml"
-            - "--config=/conf/drdroid-collector-config.yaml"
+            - "--configFile=/conf/drdroid-collector-config.yaml"
           ports:
           {{ range $port := .Values.containerPorts }}
             - name: {{ $port.name }}

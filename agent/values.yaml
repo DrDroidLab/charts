@@ -109,8 +109,12 @@ configMap:
             enabled: false
         http:
           http_exporter:
+            host: "https://ingest.drdroid.io"
             chanSize: 10
     httpServer:
       netAddr:
         endpoint: :5121
         transport: tcp
+    sqsConsumer:
+      enabled: false
+      queueUrl: ""
